@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mis Kyomu Documentos</title>
+<link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <img src="/img/logo.png" alt="Logo Club" class="logo">
+      <span>Club de Judo</span>
+    </div>
+    <div class="header-right">
+      <a href="/padres">Inicio</a>
+      <a href="/padres">Mis Documentos</a>
+      <a href="#">Perfil</a>
+      <a href="/login">Cerrar sesión</a>
+    </div>
+  </header>  
+  <div class="container">
+    <h2>Mis Documentos</h2>
+    <button class="btn-upload" id="openModal">Subir Documento</button>
+
+    <div class="doc-card">
+      <span>ficha_medica.pdf</span>
+      <button>Descargar</button>
+    </div>
+    <div class="doc-card">
+      <span>autorizacion_salida.docx</span>
+      <button>Descargar</button>
+    </div>
+  </div>
+
+  <div class="modal" id="uploadModal">
+    <div class="modal-content">
+      <h3>Subir Documento</h3>
+      <input type="file" id="fileInput">
+      <div style="text-align:right">
+        <button class="btn-submit" id="uploadBtn">Subir</button>
+        <button class="btn-cancel" id="closeModal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/scripts.js" defer></script>
+</body>
+</html>
