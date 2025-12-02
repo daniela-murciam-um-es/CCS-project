@@ -1,9 +1,28 @@
-/* General */
-body { font-family:'Roboto', sans-serif; background-color:#F0F0F0; margin:0; }
-header { background-color:#003366; color:#FFF; padding:15px; display:flex; justify-content:space-between; }
-header a { color:#FFF; text-decoration:none; margin-left:15px; }
+/* ----------------------------------------------------
+   GENERAL
+---------------------------------------------------- */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #F0F0F0;
+  margin: 0;
+}
 
-/* Layout del header */
+header {
+  background-color: #003366;
+  color: #FFF;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header a {
+  color: #FFF;
+  text-decoration: none;
+  margin-left: 15px;
+}
+
+/* Layout header */
 .header-left {
   display: flex;
   align-items: center;
@@ -12,28 +31,14 @@ header a { color:#FFF; text-decoration:none; margin-left:15px; }
 
 /* LOGO */
 .logo {
-  height: 50px;     /* tamaño controlado */
+  height: 50px;
   width: auto;
   object-fit: contain;
 }
 
-/* Ajuste del header para acomodar el logo */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background-color: #003366;
-  color: white;
-}
-
-header a {
-  color: white;
-  text-decoration: none;
-  margin-left: 15px;
-}
-
-/* Login */
+/* ----------------------------------------------------
+ LOGIN
+---------------------------------------------------- */
 .login-container {
   background-color: #FFF;
   padding: 40px;
@@ -43,32 +48,177 @@ header a {
   margin: 80px auto;
   text-align: center;
 }
-.login-container h1 { margin-bottom: 20px; color: #003366; }
+
+.login-container h1 {
+  margin-bottom: 20px;
+  color: #003366;
+}
+
 .login-container input {
-  width: 100%; padding: 10px; margin: 10px 0; border-radius: 6px; border: 1px solid #CCC;
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 6px;
+  border: 1px solid #CCC;
 }
+
 .login-container button {
-  width: 100%; padding: 12px; background-color: #003366; color: #FFF;
-  border: none; border-radius: 6px; cursor: pointer; font-size: 16px;
+  width: 100%;
+  padding: 12px;
+  background-color: #003366;
+  color: #FFF;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
 }
-.login-container button:hover { background-color: #0055AA; }
-.error { color:#B30000; font-size:14px; margin-top:5px; }
 
-/* Contenedor padres/entrenadores */
-.container { padding:20px; }
-h2 { color:#003366; }
-.btn-upload { padding:10px 20px; background-color:#0055AA; color:#FFF; border:none; border-radius:6px; cursor:pointer; margin-bottom:20px; }
-.btn-upload:hover { background-color:#003366; }
-.doc-card { background-color:#FFF; padding:15px; margin-bottom:10px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+.login-container button:hover {
+  background-color: #0055AA;
+}
 
-/* Modal */
-.modal { display:none; position:fixed; top:0; left:0; right:0; bottom:0; background-color:rgba(0,0,0,0.5); justify-content:center; align-items:center; }
-.modal-content { background-color:#FFF; padding:20px; border-radius:10px; width:300px; }
-.modal input[type="file"] { margin-bottom:15px; }
-.modal button { padding:10px; border:none; border-radius:6px; cursor:pointer; }
-.modal .btn-submit { background-color:#003366; color:#FFF; }
-.modal .btn-cancel { background-color:#B30000; color:#FFF; margin-left:10px; }
+.error {
+  color: #B30000;
+  font-size: 14px;
+  margin-top: 5px;
+}
 
-/* Entrenadores */
-.search-box input { padding:10px; width:300px; border-radius:6px; border:1px solid #CCC; }
-.parent-section { margin-bottom:20px; }
+/* ----------------------------------------------------
+ CONTENEDOR PADRES / ENTRENADORES
+---------------------------------------------------- */
+.container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 30px auto;
+  background: #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+h2 {
+  color: #003366;
+}
+
+.section-title {
+  color: #003366;
+  font-size: 22px;
+  margin-bottom: 15px;
+}
+
+/* Botones */
+.btn-upload,
+.btn {
+  padding: 10px 20px;
+  background-color: #0055AA;
+  color: #FFF;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.btn-upload:hover,
+.btn:hover {
+  background-color: #003366;
+}
+
+/* ----------------------------------------------------
+ TARJETAS DE DOCUMENTOS (LISTA BONITA)
+---------------------------------------------------- */
+.docs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.doc-card {
+  background-color: #FFF;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  border-left: 5px solid #003366;
+}
+
+.doc-card button {
+  background: #00796b;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.doc-card button:hover {
+  background: #004d40;
+}
+
+/* ----------------------------------------------------
+ SUBIR ARCHIVOS
+---------------------------------------------------- */
+.upload-box {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+/* ----------------------------------------------------
+ MODAL
+---------------------------------------------------- */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #FFF;
+  padding: 20px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+.modal input[type="file"] {
+  margin-bottom: 15px;
+}
+
+.modal button {
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.modal .btn-submit {
+  background-color: #003366;
+  color: #FFF;
+}
+
+.modal .btn-cancel {
+  background-color: #B30000;
+  color: #FFF;
+  margin-left: 10px;
+}
+
+/* ----------------------------------------------------
+ ENTRENADORES
+---------------------------------------------------- */
+.search-box input {
+  padding: 10px;
+  width: 300px;
+  border-radius: 6px;
+  border: 1px solid #CCC;
+}
+
+.parent-section {
+  margin-bottom: 20px;
+}

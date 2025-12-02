@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kyomu Judo Login</title>
-<link rel="stylesheet" href="/css/estilos.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kyomu — Iniciar sesión</title>
+  <link rel="stylesheet" href="/css/estilos.css" />
 </head>
 
 <body>
+
 <header>
-  <img src="/img/logo.png" alt="Logo Club" class="logo" />
+  <img src="/image/kyomu.png" class="logo">
+  <h1>Iniciar sesión</h1>
 </header>
 
 <div class="login-container">
-  <h1>Acceso al Área Privada</h1>
-
+  <!-- 👇 AQUÍ ESTÁ LA CLAVE: el botón va dentro de un <a href="URL DE COGNITO"> -->
   <a
-    href="https://eu-north-1entj8vbcc.auth.eu-north-1.amazoncognito.com/login?client_id=6ecfghfjbei1i7on9jtbibevbd&response_type=code&scope=openid+email&redirect_uri=http://localhost:3000/"
-    class="login-btn"
+    class="login-link"
+    href="https://eu-north-1entj8vbcc.auth.eu-north-1.amazoncognito.com/oauth2/authorize?client_id=6ecfghfjbei1i7on9jtbibevbd&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin.html&response_type=code&scope=openid+profile+email"
   >
-    Iniciar sesión con Cognito
+    <button id="login-btn" class="login-btn">
+      Iniciar sesión con Cognito
+    </button>
   </a>
 </div>
+
+<!-- 1️⃣ AWS Amplify -->
+<script src="https://cdn.jsdelivr.net/npm/aws-amplify@5.0.0/dist/aws-amplify.min.js"></script>
+
+<!-- 2️⃣ AWS SDK (ya casi no lo usamos, pero lo dejamos) -->
+<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.min.js"></script>
+
+<!-- 3️⃣ Configuración de Cognito -->
+<script src="/js/aws-exports.js"></script>
+
+<!-- 4️⃣ Lógica general (sesión, roles, documentos…) -->
+<script src="/js/scripts.js"></script>
+
+<!-- 5️⃣ Si volvemos de Cognito con ?code=..., procesar sesión -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    console.log("Login.html cargado");
+
+    if (window.location.search.includes("code=")) {
+      console.log("↪ Regresamos de Cognito → llamar a cargarSesion()");
+      if (typeof cargarSesion === "function") {
+        cargarSesion();
+      } else {
+        console.error("❌ cargarSesion no está definida");
+      }
+    }
+  });
+</script>
 
 </body>
 </html>

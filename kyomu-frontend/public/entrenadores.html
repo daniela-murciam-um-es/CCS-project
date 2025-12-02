@@ -1,52 +1,25 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Documentos de Padres - Club Deportivo Kyomu</title>
-<link rel="stylesheet" href="/css/estilos.css">
-</head>
-<body>
-  <header>
-    <div class="header-left">
-      <img src="/img/logo.png" alt="Logo Club" class="logo">
-      <span>Club de Judo</span>
-    </div>
-    <div class="header-right">
-      <a href="/padres">Inicio</a>
-      <a href="/padres">Mis Documentos</a>
-      <a href="#">Perfil</a>
-      <a href="/login">Cerrar sesión</a>
-    </div>
-  </header>
-  
-<div class="container">
-  <h2>Documentos de Padres</h2>
-  <div class="search-box">
-    Buscar padre o alumno: <input type="text" placeholder="Nombre del padre o alumno">
-  </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zona Entrenadores — Kyomu</title>
+    <link rel="stylesheet" href="/css/estilos.css" />
+  </head>
 
-  <div class="parent-section">
-    <strong>Padre: Juan Pérez</strong>
-    <div class="doc-card">
-      <span>ficha_medica.pdf</span>
-      <button>Descargar</button>
-    </div>
-    <div class="doc-card">
-      <span>autorizacion_2024.docx</span>
-      <button>Descargar</button>
-    </div>
-  </div>
+  <body>
+    <header>
+      <img src="/image/kyomu.png" class="logo" />
+      <h2>Documentos de Padres</h2>
+    </header>
 
-  <div class="parent-section">
-    <strong>Padre: Ana López</strong>
-    <div class="doc-card">
-      <span>certificado_2024.pdf</span>
-      <button>Descargar</button>
+    <div class="container">
+      <div id="docs-entrenadores"></div>
     </div>
-  </div>
-</div>
 
-<script src="/js/scripts.js" defer></script>
-</body>
+    <script src="https://cdn.jsdelivr.net/npm/aws-amplify@5.0.0/dist/aws-amplify.min.js"></script>
+    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.min.js"></script>
+    <script src="/js/aws-exports.js"></script>
+    <script src="/js/scripts.js"></script>
+  </body>
 </html>
