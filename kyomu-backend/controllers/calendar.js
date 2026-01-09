@@ -2,7 +2,7 @@
 import AWS from "aws-sdk";
 
 const dynamo = new AWS.DynamoDB.DocumentClient({
-  region: process.env.AWS_REGION || "eu-north-1",
+  region: process.env.MY_AWS_REGION || "eu-north-1",
 });
 
 // Tabla donde guardamos los eventos del calendario

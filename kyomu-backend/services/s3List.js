@@ -6,7 +6,7 @@ export const listFolder = async (prefix) => {
   const normalizedPrefix = prefix.endsWith("/") ? prefix : prefix + "/";
 
   const params = {
-    Bucket: process.env.AWS_BUCKET,
+    Bucket: process.env.MY_AWS_BUCKET,
     Prefix: normalizedPrefix,
   };
 

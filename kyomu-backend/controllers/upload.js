@@ -8,7 +8,7 @@ import AWS from "aws-sdk";
 const s3 = new AWS.S3();
 const dynamo = new AWS.DynamoDB.DocumentClient();
 
-const S3_BUCKET = process.env.S3_BUCKET_NAME || process.env.AWS_BUCKET;
+const S3_BUCKET = process.env.S3_BUCKET_NAME || process.env.MY_AWS_BUCKET;
 const PARENT_DOCS_TABLE = process.env.PARENT_DOCS_TABLE || "KyomuParentDocuments";
 const CHILDREN_TABLE = process.env.CHILDREN_TABLE || "KyomuChildren";
 // ========================================================

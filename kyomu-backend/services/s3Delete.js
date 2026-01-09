@@ -3,7 +3,7 @@ import s3 from "./s3.js";
 
 export const deleteObject = async (key) => {
   const params = {
-    Bucket: process.env.AWS_BUCKET,
+    Bucket: process.env.MY_AWS_BUCKET,
     Key: key,
   };
 

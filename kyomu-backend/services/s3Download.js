@@ -6,10 +6,10 @@ export const generateDownloadURL = async (folder, filename) => {
   const normalizedFolder = folder.endsWith("/") ? folder : folder + "/";
   const Key = normalizedFolder + filename;
 
-  console.log("🔽 Presigned GET — bucket:", process.env.AWS_BUCKET, "key:", Key);
+  console.log("🔽 Presigned GET — bucket:", process.env.MY_AWS_BUCKET, "key:", Key);
 
   const params = {
-    Bucket: process.env.AWS_BUCKET,
+    Bucket: process.env.MY_AWS_BUCKET,
     Key,
     Expires: 60, // segundos
   };
