@@ -1407,6 +1407,75 @@ function openEventModal(dateStr, existingEvent = null) {
   modal.style.display = "flex";
 }
 
+async function submitEventForm(e) {
+  e.preventDefault();
+
+  try {
+    const modal = document.getElementById("event-modal");
+    const eventId = modal?.dataset?.eventId || ""; // 👈 si existe, estamos editando
+
+    const date = document.getElementById("event-date-hidden")?.value;
+    const title = document.getElementById("event-title")?.value?.trim();
+
+    const description = document.getElementById("event-description")?.value || "";
+    const priceRaw = document.getElementById("event-price")?.value;
+    const place = document.getElementById("event-place")?.value || "";
+    const time = document.getElementById("event-time")?.value || "";
+    const requiresAuthorization = !!document.getElementById("event-auth-required")?.checked;
+    const audience = document.getElementById("event-audience")?.value || "";
+    const paymentInfo = document.getElementById("event-payment")?.value || "";
+
+    if ((!eventId && !date) || !title) {
+      alert("Faltan campos obligatorios: fecha y nombre del evento.");
+      return;
+    }
+
+    const price = (priceRaw === "" || priceRaw == null) ? null : Number(priceRaw);
+
+    const url = eventId
+      ? `/api/calendar/events/${encodeURIComponent(eventId)}`
+      : `/api/calendar/events`;
+
+    const method = eventId ? "PUT" : "POST";
+
+    const body = {
+      title,
+      description,
+      price,
+      place,
+      time,
+      requiresAuthorization,
+      audience,
+      paymentInfo,
+    };
+    if (!eventId) body.date = date; // solo al crear
+
+    const res = await fetch(url, {
+      method,
+      headers: {
+        ...getAuthHeaders(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Error guardando evento:", res.status, text);
+      alert("❌ No se pudo guardar el evento.");
+      return;
+    }
+
+    closeEventModal();
+    await loadEventsForCurrentMonth();
+    alert(eventId ? "✅ Evento actualizado" : "✅ Evento creado");
+  } catch (err) {
+    console.error("Error en submitEventForm:", err);
+    alert("❌ Error al guardar el evento");
+  }
+}
+
+
 function closeEventModal() {
   const modal = document.getElementById("event-modal");
   if (modal) {

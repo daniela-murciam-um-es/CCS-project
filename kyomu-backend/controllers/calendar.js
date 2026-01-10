@@ -74,6 +74,90 @@ export const createEvent = async (req, res) => {
   }
 };
 
+export const updateEvent = async (req, res) => {
+  try {
+    const user = req.user;
+    const groups = user.groups || [];
+
+    if (!groups.includes("entrenadores")) {
+      return res.status(403).json({ error: "Solo entrenadores" });
+    }
+
+    const eventId = req.params.id;
+    if (!eventId) return res.status(400).json({ error: "Missing event id" });
+
+    const {
+      title,
+      description,
+      price,
+      place,
+      time,
+      requiresAuthorization,
+      audience,
+      paymentInfo,
+    } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ error: "El título es obligatorio" });
+    }
+
+    // Traer evento actual para conservar date y attendances (y lo que ya exista)
+    const current = await dynamo
+      .get({ TableName: TABLE_NAME, Key: { id: eventId } })
+      .promise();
+
+    if (!current.Item) {
+      return res.status(404).json({ error: "Evento no encontrado" });
+    }
+
+    // (Opcional) si quieres impedir editar eventos de otros entrenadores:
+    // if (current.Item.createdBy !== user.sub) return res.status(403).json({ error: "Forbidden" });
+
+    const updatedAt = new Date().toISOString();
+
+    await dynamo
+      .update({
+        TableName: TABLE_NAME,
+        Key: { id: eventId },
+        UpdateExpression:
+          "SET #t=:t, #d=:d, #p=:p, #pl=:pl, #ti=:ti, #ra=:ra, #au=:au, #pi=:pi, updatedAt=:ua",
+        ExpressionAttributeNames: {
+          "#t": "title",
+          "#d": "description",
+          "#p": "price",
+          "#pl": "place",
+          "#ti": "time",
+          "#ra": "requiresAuthorization",
+          "#au": "audience",
+          "#pi": "paymentInfo",
+        },
+        ExpressionAttributeValues: {
+          ":t": title.trim(),
+          ":d": (description || "").trim(),
+          ":p": price ?? "",
+          ":pl": (place || "").trim(),
+          ":ti": time ?? "",
+          ":ra": !!requiresAuthorization,
+          ":au": (audience || "").trim(),
+          ":pi": (paymentInfo || "").trim(),
+          ":ua": updatedAt,
+        },
+        ReturnValues: "ALL_NEW",
+      })
+      .promise();
+
+    // Si quieres devolver el evento actualizado, mejor pedir ReturnValues y devolver Attributes:
+    // const result = await dynamo.update(...).promise();
+    // res.json({ event: result.Attributes });
+
+    res.json({ success: true });
+  } catch (e) {
+    console.error("Error en updateEvent:", e);
+    res.status(500).json({ error: "Error actualizando el evento" });
+  }
+};
+
+
 /**
  * Obtener eventos de un mes concreto
  * GET /api/calendar/events?year=2025&month=12

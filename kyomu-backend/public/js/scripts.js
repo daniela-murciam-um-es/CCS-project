@@ -1529,6 +1529,8 @@ async function submitEventForm(e) {
 
   try {
     const modal = document.getElementById("event-modal");
+    const eventId = modal?.dataset?.eventId || ""; // 👈 clave para editar
+
     const date = document.getElementById("event-date-hidden")?.value;
     const title = document.getElementById("event-title")?.value?.trim();
 
@@ -1540,44 +1542,55 @@ async function submitEventForm(e) {
     const audience = document.getElementById("event-audience")?.value || "";
     const paymentInfo = document.getElementById("event-payment")?.value || "";
 
-    if (!date || !title) {
+    // En crear: necesitas date + title
+    // En editar: necesitas title (y el eventId)
+    if ((!eventId && !date) || !title) {
       alert("Faltan campos obligatorios: fecha y nombre del evento.");
       return;
     }
 
-    // Convertir precio a número si viene, o null si vacío
     const price = (priceRaw === "" || priceRaw == null) ? null : Number(priceRaw);
 
-    const res = await fetch("/api/calendar/events", {
-      method: "POST",
+    // 👇 Si hay eventId → EDITAR (PUT). Si no → CREAR (POST)
+    const url = eventId
+      ? `/api/calendar/events/${encodeURIComponent(eventId)}`
+      : `/api/calendar/events`;
+
+    const method = eventId ? "PUT" : "POST";
+
+    const body = {
+      title,
+      description,
+      price,
+      place,
+      time,
+      requiresAuthorization,
+      audience,
+      paymentInfo,
+    };
+
+    // Solo en creación mandamos date
+    if (!eventId) body.date = date;
+
+    const res = await fetch(url, {
+      method,
       headers: {
         ...getAuthHeaders(),
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        date,
-        title,
-        description,
-        price,
-        place,
-        time,
-        requiresAuthorization,
-        audience,
-        paymentInfo,
-      }),
+      body: JSON.stringify(body),
     });
 
     if (!res.ok) {
       const text = await res.text();
-      console.error("Error creando evento:", res.status, text);
+      console.error("Error guardando evento:", res.status, text);
       alert("❌ No se pudo guardar el evento.");
       return;
     }
 
-    // Cerrar modal y refrescar calendario
     closeEventModal();
     await loadEventsForCurrentMonth();
-    alert("✅ Evento guardado");
+    alert(eventId ? "✅ Evento actualizado" : "✅ Evento creado");
   } catch (err) {
     console.error("Error en submitEventForm:", err);
     alert("❌ Error al guardar el evento");

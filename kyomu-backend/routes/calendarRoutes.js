@@ -4,7 +4,7 @@ import {
   createEvent,
   getEventsForMonth,
   updateEventAttendance,
-} from "../controllers/calendar.js";
+  updateEvent} from "../controllers/calendar.js";
 
 const router = express.Router();
 
@@ -15,5 +15,6 @@ router.post(
   verifyToken(["padres"]),
   updateEventAttendance
 );
+router.put("/events/:id", verifyToken(["entrenadores"]), updateEvent);
 
 export default router;
