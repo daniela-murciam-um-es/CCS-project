@@ -8,9 +8,9 @@ window.awsconfig = {
     domain: "eu-north-1entj8vbcc.auth.eu-north-1.amazoncognito.com",
     scope: ["openid", "profile", "email"],
     // 🚀 ACTUALIZADO: Ahora apunta a tu URL de Amplify
-    redirectSignIn: "https://main.d2hoslvqyftwz.amplifyapp.com/login.html",
-    redirectSignOut: "https://main.d2hoslvqyftwz.amplifyapp.com/login.html",
-    // Mantenemos "code" si así configuraste tu Cognito
-    responseType: "code"
+    redirectSignIn: "https://ccs-project.onrender.com/login.html",
+    redirectSignOut: "https://ccs-project.onrender.com/login.html",
+    responseType: "token"
+
   }
 };
