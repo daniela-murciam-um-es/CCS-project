@@ -1319,9 +1319,11 @@ function renderCalendarTrainer() {
     if (isEntrenadoresPage) {
       cell.addEventListener("click", () => {
         const ev = eventsForDay[0] || null;
+        console.log("EDIT click", { dateStr, ev, evId: ev?.id });
         openEventModal(dateStr, ev);
       });
-    } else if (isPadresPage) {
+    }
+     else if (isPadresPage) {
       if (eventsForDay.length > 0) {
         cell.addEventListener("click", () => {
           openAttendanceModal(dateStr, eventsForDay);
@@ -1398,6 +1400,8 @@ function openEventModal(dateStr, existingEvent = null) {
     paymentInput.value = "";
     modal.dataset.eventId = "";
   }
+
+  console.log("openEventModal existingEvent.id =", existingEvent?.id);
 
   // Resumen de asistencia (ordenado por colegio / nombre)
   if (attendanceDiv) {
@@ -1580,6 +1584,9 @@ async function submitEventForm(e) {
       },
       body: JSON.stringify(body),
     });
+
+    console.log("submitEventForm eventId =", eventId);
+
 
     if (!res.ok) {
       const text = await res.text();
