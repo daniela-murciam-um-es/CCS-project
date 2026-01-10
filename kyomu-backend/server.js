@@ -38,6 +38,9 @@ app.get("/entrenadores", (req, res) => {
   res.sendFile(path.join(__dirname, "public/entrenadores.html"));
 });
 
+// ================================
+//   RUTAS DE API
+// ================================
 // Rutas API de ficheros
 app.use("/api/files", s3Routes);
 
@@ -48,15 +51,7 @@ app.use("/api/calendar", calendarRoutes);
 app.use("/api/parents", parentsRoutes);
 
 
-// ================================
-//   RUTAS DE API
-// ================================
 
-// S3: subida/listado/descarga/eliminación de documentos
-app.use("/api/files", s3Routes);
-
-// Calendario: eventos (crear, listar por mes)
-app.use("/api/calendar", calendarRoutes);
 
 app.use("/api/comments", commentsRoutes)
 
