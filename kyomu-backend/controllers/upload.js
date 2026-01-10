@@ -29,11 +29,12 @@ export const getUploadUrl = async (req, res) => {
       let key;
       if (type === "plantilla") {
           if (!isTrainer) return res.status(403).json({ error: "Solo entrenadores" });
-          key = `publico/${filename}`;
+          key = `padres/${user.sub}/${childId}/${filename}`;
       } else {
           if (!isParent) return res.status(403).json({ error: "Solo padres" });
           if (!childId) return res.status(400).json({ error: "childId obligatorio" });
-          key = `padres/${user.sub}/${filename}`;
+          key = `padres/${user.sub}/${childId}/${filename}`;
+
       }
 
       const params = {
@@ -137,7 +138,7 @@ export const getDownloadURL = async (req, res) => {
 
     const groups = user.groups || [];
     const isTrainer = groups.includes("entrenadores");
-    const isOwnFolder = folder === `padres/${user.sub}`;
+    const isOwnFolder = folder === `padres/${user.sub}` || folder.startsWith(`padres/${user.sub}/`);
 
     // Permitimos:
     //  - padres: su propia carpeta padres/<sub>/ y cualquier ruta bajo "publico/"
@@ -329,15 +330,13 @@ export const deleteDocument = async (req, res) => {
     // 2) Si es el propio padre, intentamos borrar metadatos en Dynamo
     if (isOwnParentFile) {
       try {
-        await dynamo
-          .delete({
-            TableName: PARENT_DOCS_TABLE,
-            Key: {
-              parentId: user.sub,
-              documentKey: key,
-            },
-          })
-          .promise();
+        await dynamo.delete({
+          TableName: PARENT_DOCS_TABLE,
+          Key: {
+            parentSub: user.sub,
+            documentKey: key,
+          },
+        }).promise();        
       } catch (e) {
         console.error("Error borrando metadatos en Dynamo:", e);
         // No rompemos la respuesta por esto
