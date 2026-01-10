@@ -11,10 +11,9 @@
     "express": "^4.19.2",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.0.1",
     "aws-amplify": "^6.15.8",
     "aws-sdk": "^2.1692.0"
   }
-  
-  
   
 }
