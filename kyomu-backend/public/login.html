@@ -25,19 +25,39 @@
 
 <div class="login-container">
   <!-- Botón = enlace directo al Hosted UI con response_type=token -->
-  <a
-  class="login-link"
-  href="https://eu-north-1entj8vbcc.auth.eu-north-1.amazoncognito.com/oauth2/authorize?client_id=6ecfghfjbei1i7on9jtbibevbd&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Flogin.html&response_type=token&scope=openid+profile+email&prompt=login"
->
-  <button id="login-btn" class="login-btn">
-    Iniciar sesión con Cognito
-  </button>
-</a>
+  <a class="login-link" id="cognito-login">
+    <button id="login-btn" class="login-btn">
+      Iniciar sesión con Cognito
+    </button>
+  </a>
+  
 
 </div>
 
 <!-- Config con dominio, etc. -->
 <script src="/js/aws-exports.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cfg = window.awsconfig;
+    const loginLink = document.getElementById("cognito-login");
+
+    const domain = cfg.oauth.domain;
+    const clientId = cfg.aws_user_pools_web_client_id;
+    const redirectUri = encodeURIComponent(cfg.oauth.redirectSignIn);
+    const scope = encodeURIComponent(cfg.oauth.scope.join(" "));
+    const responseType = cfg.oauth.responseType || "token";
+
+    loginLink.href =
+      `https://${domain}/oauth2/authorize` +
+      `?client_id=${clientId}` +
+      `&redirect_uri=${redirectUri}` +
+      `&response_type=${responseType}` +
+      `&scope=${scope}` +
+      `&prompt=login`;
+  });
+</script>
+
 
 <!-- Lógica nuestra (sin Amplify) -->
 <script src="/js/scripts.js"></script>
