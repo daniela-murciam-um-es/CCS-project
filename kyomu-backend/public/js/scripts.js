@@ -153,6 +153,13 @@ function initSession() {
   window.idToken = token;
   window.payload = payload;
 
+  // Registrar login en LogBook (no bloqueante)
+  fetch("/api/logbook/login", {
+    method: "POST",
+    headers: { ...getAuthHeaders(), "Content-Type": "application/json" },
+  }).catch(() => {});
+
+
   console.log("✅ Sesión inicializada. Payload:", payload);
 
   redirigirSegunGrupo();

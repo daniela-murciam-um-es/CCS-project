@@ -10,6 +10,9 @@ import s3Routes from "./routes/s3Routes.js";
 import calendarRoutes from "./routes/calendarRoutes.js";
 import parentsRoutes from "./routes/parentsRoutes.js";
 import commentsRoutes from "./routes/commentsRoutes.js";
+import logbookRoutes from "./routes/logbookRoutes.js";
+
+
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -71,7 +74,7 @@ app.use("/api/calendar", calendarRoutes);
 // Padres (hijos, etc.)
 app.use("/api/parents", parentsRoutes);
 
-
+app.use("/api/logbook", logbookRoutes);
 
 
 app.use("/api/comments", commentsRoutes)

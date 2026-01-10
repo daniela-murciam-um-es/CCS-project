@@ -4,6 +4,7 @@ import { listFolder } from "../services/s3List.js";
 import { deleteObject } from "../services/s3Delete.js";
 import { getParentsNameMap } from "../services/cognitoUsers.js";
 import AWS from "aws-sdk";
+import { logEvent } from "../services/logbook.js";
 
 const s3 = new AWS.S3();
 const dynamo = new AWS.DynamoDB.DocumentClient();
@@ -28,14 +29,14 @@ export const getUploadUrl = async (req, res) => {
 
       let key;
       if (type === "plantilla") {
-          if (!isTrainer) return res.status(403).json({ error: "Solo entrenadores" });
-          key = `padres/${user.sub}/${childId}/${filename}`;
+        if (!isTrainer) return res.status(403).json({ error: "Solo entrenadores" });
+        key = `publico/${filename}`;
       } else {
-          if (!isParent) return res.status(403).json({ error: "Solo padres" });
-          if (!childId) return res.status(400).json({ error: "childId obligatorio" });
-          key = `padres/${user.sub}/${childId}/${filename}`;
-
+        if (!isParent) return res.status(403).json({ error: "Solo padres" });
+        if (!childId) return res.status(400).json({ error: "childId obligatorio" });
+        key = `padres/${user.sub}/${childId}/${filename}`;
       }
+      
 
       const params = {
           Bucket: S3_BUCKET,
@@ -61,6 +62,22 @@ export const getUploadUrl = async (req, res) => {
               }
           }).promise();
       }
+
+      await logEvent(
+        {
+          user,
+          action: "FILE_UPLOAD_URL",
+          target: key,
+          meta: {
+            filename,
+            type: type || "parent",
+            childId: childId || null,
+            childFullName: childFullName || null,
+          },
+        },
+        req
+      );
+      
 
       return res.json({ url, key });
   } catch (e) {
@@ -151,6 +168,16 @@ export const getDownloadURL = async (req, res) => {
     }
 
     const url = await generateDownloadURL(folder, filename);
+
+    await logEvent(
+      {
+        user,
+        action: "FILE_DOWNLOAD_URL",
+        target: `${folder}/${filename}`,
+      },
+      req
+    );    
+
     res.json({ url });
   } catch (e) {
     console.error("Error en getDownloadURL:", e);
@@ -342,6 +369,16 @@ export const deleteDocument = async (req, res) => {
         // No rompemos la respuesta por esto
       }
     }
+
+    await logEvent(
+      {
+        user,
+        action: "FILE_DELETE",
+        target: key,
+      },
+      req
+    );
+    
 
     res.json({ success: true });
   } catch (e) {
