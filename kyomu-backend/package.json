@@ -8,7 +8,10 @@
     "dev": "nodemon server.js"
   },
   "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5",
     "aws-amplify": "^6.15.8",
     "aws-sdk": "^2.1692.0"
   }
+  
 }
