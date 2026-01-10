@@ -18,6 +18,22 @@ const __dirname = path.dirname(__filename);
 const app = express();
 app.use(express.json());
 
+app.use((req, res, next) => {
+  // Evita que Safari/otros navegadoes cacheen el login/config
+  if (
+    req.path === "/" ||
+    req.path.endsWith(".html") ||
+    req.path.endsWith("aws-exports.js")
+  ) {
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
+    res.setHeader("Surrogate-Control", "no-store");
+  }
+  next();
+});
+
+
 // ================================
 //   SERVIDOR DE ARCHIVOS ESTÁTICOS
 // ================================

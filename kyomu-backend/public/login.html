@@ -29,6 +29,13 @@
       Iniciar sesión con Cognito
     </button>
   </a>
+
+  <p style="margin-top:12px; text-align:center;">
+    <a href="#" onclick="resetCognitoSession(); return false;">
+      ¿Problemas para entrar? Reiniciar sesión
+    </a>
+  </p>
+  
   
 
 </div>
@@ -55,6 +62,19 @@
       `&scope=${scope}` +
       `&prompt=login`;
   });
+</script>
+
+<script>
+  function resetCognitoSession() {
+    const cfg = window.awsconfig;
+    const domain = cfg.oauth.domain;
+    const clientId = cfg.aws_user_pools_web_client_id;
+    const logoutUri = encodeURIComponent(cfg.oauth.redirectSignOut);
+
+    // Esto fuerza a Cognito a borrar cookies/sesión y vuelve al login
+    const url = `https://${domain}/logout?client_id=${clientId}&logout_uri=${logoutUri}`;
+    window.location.href = url;
+  }
 </script>
 
 
