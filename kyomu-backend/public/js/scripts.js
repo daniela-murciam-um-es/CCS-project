@@ -1521,6 +1521,70 @@ function openAttendanceModal(dateStr, eventsForDay) {
   modal.style.display = "flex";
 }
 
+// ================================
+// Guardar evento (entrenadores)
+// ================================
+async function submitEventForm(e) {
+  e.preventDefault();
+
+  try {
+    const modal = document.getElementById("event-modal");
+    const date = document.getElementById("event-date-hidden")?.value;
+    const title = document.getElementById("event-title")?.value?.trim();
+
+    const description = document.getElementById("event-description")?.value || "";
+    const priceRaw = document.getElementById("event-price")?.value;
+    const place = document.getElementById("event-place")?.value || "";
+    const time = document.getElementById("event-time")?.value || "";
+    const requiresAuthorization = !!document.getElementById("event-auth-required")?.checked;
+    const audience = document.getElementById("event-audience")?.value || "";
+    const paymentInfo = document.getElementById("event-payment")?.value || "";
+
+    if (!date || !title) {
+      alert("Faltan campos obligatorios: fecha y nombre del evento.");
+      return;
+    }
+
+    // Convertir precio a número si viene, o null si vacío
+    const price = (priceRaw === "" || priceRaw == null) ? null : Number(priceRaw);
+
+    const res = await fetch("/api/calendar/events", {
+      method: "POST",
+      headers: {
+        ...getAuthHeaders(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        date,
+        title,
+        description,
+        price,
+        place,
+        time,
+        requiresAuthorization,
+        audience,
+        paymentInfo,
+      }),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("Error creando evento:", res.status, text);
+      alert("❌ No se pudo guardar el evento.");
+      return;
+    }
+
+    // Cerrar modal y refrescar calendario
+    closeEventModal();
+    await loadEventsForCurrentMonth();
+    alert("✅ Evento guardado");
+  } catch (err) {
+    console.error("Error en submitEventForm:", err);
+    alert("❌ Error al guardar el evento");
+  }
+}
+
+
 function closeAttendanceModal() {
   const modal = document.getElementById("attendance-modal");
   if (modal) modal.style.display = "none";
