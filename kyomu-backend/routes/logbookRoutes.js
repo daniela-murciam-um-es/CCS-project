@@ -4,13 +4,20 @@ import AWS from "aws-sdk";
 import { logEvent } from "../services/logbook.js";
 
 const router = express.Router();
+
 const dynamo = new AWS.DynamoDB.DocumentClient({
   region: process.env.MY_AWS_REGION || "eu-north-1",
 });
 
 const LOGBOOK_TABLE = process.env.LOGBOOK_TABLE || "KyomuLogBook";
 
-// Solo entrenadores pueden consultar logs
+// Registrar login
+router.post("/login", verifyToken(["padres", "entrenadores"]), async (req, res) => {
+  await logEvent({ user: req.user, action: "LOGIN" }, req);
+  res.json({ ok: true });
+});
+
+// Consultar logs de un usuario (solo entrenadores)
 router.get("/user/:sub", verifyToken(["entrenadores"]), async (req, res) => {
   try {
     const sub = req.params.sub;
@@ -20,10 +27,8 @@ router.get("/user/:sub", verifyToken(["entrenadores"]), async (req, res) => {
       .query({
         TableName: LOGBOOK_TABLE,
         KeyConditionExpression: "pk = :pk",
-        ExpressionAttributeValues: {
-          ":pk": `USER#${sub}`,
-        },
-        ScanIndexForward: false, // 👈 más recientes primero
+        ExpressionAttributeValues: { ":pk": `USER#${sub}` },
+        ScanIndexForward: false,
         Limit: limit,
       })
       .promise();
@@ -33,11 +38,6 @@ router.get("/user/:sub", verifyToken(["entrenadores"]), async (req, res) => {
     console.error("Error leyendo logbook:", e);
     res.status(500).json({ error: "Error leyendo logbook" });
   }
-});
-
-router.post("/login", verifyToken(["padres", "entrenadores"]), async (req, res) => {
-  await logEvent({ user: req.user, action: "LOGIN" }, req);
-  res.json({ ok: true });
 });
 
 export default router;
