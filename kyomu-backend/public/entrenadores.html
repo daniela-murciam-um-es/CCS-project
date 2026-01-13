@@ -64,6 +64,26 @@
         </section>
       </div>
 
+      <!-- 3. LOGBOOK DE PADRES -->
+      <section style="margin-top: 20px;">
+        <h3>LogBook</h3>
+      
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <button class="btn" type="button" onclick="verMisLogs()">Ver mis logs</button>
+      
+          <input
+            id="logbook-sub-input"
+            type="text"
+            placeholder="SUB del padre (opcional)"
+            style="min-width: 320px; padding:8px;"
+          />
+          <button class="btn" type="button" onclick="verLogsDeUsuario()">Ver logs de ese usuario</button>
+        </div>
+      
+        <pre id="logbook-output" style="margin-top:12px; background:#111; color:#0f0; padding:12px; border-radius:8px; overflow:auto; max-height:320px;"></pre>
+      </section>
+      
+
       <!-- 🔹 CONTENIDO: CALENDARIO -->
       <div id="tab-calendar" class="tab-content">
         <section class="calendar-section">

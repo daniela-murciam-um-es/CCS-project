@@ -1773,6 +1773,56 @@ function escapeHtml(str) {
     .replace(/'/g, "&#039;");
 }
 
+async function verMisLogs() {
+  const out = document.getElementById("logbook-output");
+  if (out) out.textContent = "Cargando...";
+
+  try {
+    const res = await fetch("/api/logbook/me?limit=50", {
+      headers: getAuthHeaders(),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      if (out) out.textContent = `Error ${res.status}: ${text}`;
+      return;
+    }
+
+    const data = await res.json();
+    if (out) out.textContent = JSON.stringify(data.items || [], null, 2);
+  } catch (e) {
+    if (out) out.textContent = `Error: ${e.message}`;
+  }
+}
+
+async function verLogsDeUsuario() {
+  const sub = document.getElementById("logbook-sub-input")?.value?.trim();
+  const out = document.getElementById("logbook-output");
+  if (out) out.textContent = "Cargando...";
+
+  if (!sub) {
+    if (out) out.textContent = "Pon un SUB en la caja para ver logs de ese usuario.";
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/logbook/user/${encodeURIComponent(sub)}?limit=50`, {
+      headers: getAuthHeaders(),
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      if (out) out.textContent = `Error ${res.status}: ${text}`;
+      return;
+    }
+
+    const data = await res.json();
+    if (out) out.textContent = JSON.stringify(data.items || [], null, 2);
+  } catch (e) {
+    if (out) out.textContent = `Error: ${e.message}`;
+  }
+}
+
 
 
 

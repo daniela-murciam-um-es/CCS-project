@@ -17,6 +17,29 @@ router.post("/login", verifyToken(["padres", "entrenadores"]), async (req, res) 
   res.json({ ok: true });
 });
 
+// Ver MIS logs (padres y entrenadores)
+router.get("/me", verifyToken(["padres", "entrenadores"]), async (req, res) => {
+  try {
+    const sub = req.user.sub;
+    const limit = Math.min(parseInt(req.query.limit || "50", 10), 200);
+
+    const result = await dynamo
+      .query({
+        TableName: LOGBOOK_TABLE,
+        KeyConditionExpression: "pk = :pk",
+        ExpressionAttributeValues: { ":pk": `USER#${sub}` },
+        ScanIndexForward: false,
+        Limit: limit,
+      })
+      .promise();
+
+    res.json({ items: result.Items || [] });
+  } catch (e) {
+    console.error("Error leyendo logbook/me:", e);
+    res.status(500).json({ error: "Error leyendo logbook" });
+  }
+});
+
 // Consultar logs de un usuario (solo entrenadores)
 router.get("/user/:sub", verifyToken(["entrenadores"]), async (req, res) => {
   try {
@@ -39,5 +62,7 @@ router.get("/user/:sub", verifyToken(["entrenadores"]), async (req, res) => {
     res.status(500).json({ error: "Error leyendo logbook" });
   }
 });
+
+
 
 export default router;
