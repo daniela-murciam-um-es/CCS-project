@@ -1824,29 +1824,70 @@ async function verLogsDeUsuario() {
 }
 
 let __loginsPadresCache = [];
+let __feedPadresCache = [];
 
-async function cargarLoginsPadres() {
+async function cargarFeedPadres() {
   const tbody = document.getElementById("logbook-tbody");
-  if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="padding:8px;">Cargando...</td></tr>`;
+  if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="padding:8px;">Cargando...</td></tr>`;
 
   try {
-    const res = await fetch("/api/logbook/logins/padres?limit=200", {
+    const res = await fetch("/api/logbook/feed/padres?limit=200", {
       headers: getAuthHeaders(),
     });
 
     if (!res.ok) {
       const text = await res.text();
-      if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="padding:8px;">Error ${res.status}: ${text}</td></tr>`;
+      if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="padding:8px;">Error ${res.status}: ${text}</td></tr>`;
       return;
     }
 
     const data = await res.json();
-    __loginsPadresCache = data.items || [];
-    renderLoginsPadres(__loginsPadresCache);
+    __feedPadresCache = data.items || [];
+    renderFeedPadres(__feedPadresCache);
   } catch (e) {
-    if (tbody) tbody.innerHTML = `<tr><td colspan="4" style="padding:8px;">Error: ${e.message}</td></tr>`;
+    if (tbody) tbody.innerHTML = `<tr><td colspan="6" style="padding:8px;">Error: ${e.message}</td></tr>`;
   }
 }
+
+function tipoDeAccion(action = "") {
+  if (action === "LOGIN") return "LOGIN";
+  if (action.startsWith("FILE_")) return "FILE";
+  return "OTRO";
+}
+
+function renderFeedPadres(items) {
+  const tbody = document.getElementById("logbook-tbody");
+  if (!tbody) return;
+
+  if (!items.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="padding:8px;">No hay actividad de padres todavía.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = items.map(it => {
+    const ts = it.ts || "";
+    const name = it.parentName || it.userSub || "";
+    const sub = it.userSub || "";
+    const ip = it.ip || "";
+    const action = it.action || "";
+    const tipo = tipoDeAccion(action);
+
+    // Para archivos, target suele ser la key S3. Para login, target es null.
+    const target = it.target || it.path || "";
+    return `
+    <tr>
+      <td style="padding:8px; border-bottom:1px solid #eee;">${escapeHtml(ts)}</td>
+      <td style="padding:8px; border-bottom:1px solid #eee;">${escapeHtml(name)}</td>
+      <td style="padding:8px; border-bottom:1px solid #eee; font-family: monospace;">${escapeHtml(sub)}</td>
+      <td style="padding:8px; border-bottom:1px solid #eee;">${escapeHtml(tipo)}</td>
+      <td style="padding:8px; border-bottom:1px solid #eee; font-weight:600;">${escapeHtml(action)}</td>
+      <td style="padding:8px; border-bottom:1px solid #eee; font-family: monospace;">${escapeHtml(target)}</td>
+      <td style="padding:8px; border-bottom:1px solid #eee;">${escapeHtml(ip)}</td>
+    </tr>
+  `;
+  }).join("");
+}
+
 
 function renderLoginsPadres(items) {
   const tbody = document.getElementById("logbook-tbody");
@@ -1882,9 +1923,8 @@ function filtrarLoginsPadres() {
     const sub = (it.userSub || "").toLowerCase();
     const ip = (it.ip || "").toLowerCase();
     const path = (it.path || "").toLowerCase();
-    return ts.includes(q) || sub.includes(q) || ip.includes(q) || path.includes(q);
-  });
-
+    const name = (it.parentName || "").toLowerCase();
+    return name.includes(q) || ts.includes(q) || sub.includes(q) || ip.includes(q) || path.includes(q) || action.includes(q) || target.includes(q);  });
   renderLoginsPadres(filtered);
 }
 

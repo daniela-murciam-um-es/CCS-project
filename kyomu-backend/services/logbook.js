@@ -43,7 +43,23 @@ export async function logEvent({ user, action, target = null, meta = {} }, req =
           TableName: LOGBOOK_TABLE,
           Item: item,
         }).promise();
-    
+
+        const isParent = groups.includes("padres");
+
+        // Feed global de padres: LOGIN + FILE OPS (para entrenadores)
+        if (isParent) {
+          const feedItem = {
+            ...item,
+            pk: "FEED#padres",
+            sk: `${ts}#${userSub}#${rand()}`,
+          };
+
+          await dynamo.put({
+            TableName: LOGBOOK_TABLE,
+            Item: feedItem,
+          }).promise();
+        }
+
         // 2) Item "global": SOLO para logins de padres (para listarlos sin saber sub)
         if (action === "LOGIN" && role === "padres") {
           const globalItem = {

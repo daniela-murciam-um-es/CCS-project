@@ -87,7 +87,7 @@
         <h3>LogBook — Logins de Padres</h3>
       
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-          <button class="btn" type="button" onclick="cargarLoginsPadres()">Cargar logins</button>
+          <button ... onclick="cargarFeedPadres()">Cargar actividad</button>
       
           <input id="logbook-filter"
             type="text"
@@ -102,11 +102,14 @@
             <thead>
               <tr>
                 <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Fecha</th>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Padre (sub)</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Padre</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Sub</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Tipo</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Acción</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Archivo / Target</th>
                 <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">IP</th>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Ruta</th>
               </tr>
-            </thead>
+            </thead>            
             <tbody id="logbook-tbody"></tbody>
           </table>
         </div>
