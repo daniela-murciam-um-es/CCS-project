@@ -63,6 +63,26 @@ router.get("/user/:sub", verifyToken(["entrenadores"]), async (req, res) => {
   }
 });
 
+// Últimos logins de PADRES (para entrenadores)
+router.get("/logins/padres", verifyToken(["entrenadores"]), async (req, res) => {
+  try {
+    const limit = Math.min(parseInt(req.query.limit || "100", 10), 200);
+
+    const result = await dynamo.query({
+      TableName: LOGBOOK_TABLE,
+      KeyConditionExpression: "pk = :pk",
+      ExpressionAttributeValues: { ":pk": "LOGINS#padres" },
+      ScanIndexForward: false, // más recientes primero
+      Limit: limit,
+    }).promise();
+
+    res.json({ items: result.Items || [] });
+  } catch (e) {
+    console.error("Error leyendo logins padres:", e);
+    res.status(500).json({ error: "Error leyendo logins padres" });
+  }
+});
+
 
 
 export default router;

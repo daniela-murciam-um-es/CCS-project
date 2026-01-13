@@ -82,6 +82,36 @@
       
         <pre id="logbook-output" style="margin-top:12px; background:#111; color:#0f0; padding:12px; border-radius:8px; overflow:auto; max-height:320px;"></pre>
       </section>
+
+      <section style="margin-top:20px;">
+        <h3>LogBook — Logins de Padres</h3>
+      
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <button class="btn" type="button" onclick="cargarLoginsPadres()">Cargar logins</button>
+      
+          <input id="logbook-filter"
+            type="text"
+            placeholder="Filtrar por sub / IP / fecha..."
+            style="min-width:280px; padding:8px;"
+            oninput="filtrarLoginsPadres()"
+          />
+        </div>
+      
+        <div style="margin-top:12px; overflow:auto;">
+          <table id="logbook-table" style="width:100%; border-collapse:collapse;">
+            <thead>
+              <tr>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Fecha</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Padre (sub)</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">IP</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Ruta</th>
+              </tr>
+            </thead>
+            <tbody id="logbook-tbody"></tbody>
+          </table>
+        </div>
+      </section>
+      
       
 
       <!-- 🔹 CONTENIDO: CALENDARIO -->

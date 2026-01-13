@@ -38,12 +38,26 @@ export async function logEvent({ user, action, target = null, meta = {} }, req =
       method: req?.method || null,
     };
 
-    await dynamo
-      .put({
-        TableName: LOGBOOK_TABLE,
-        Item: item,
-      })
-      .promise();
+        // 1) Item normal: por usuario
+        await dynamo.put({
+          TableName: LOGBOOK_TABLE,
+          Item: item,
+        }).promise();
+    
+        // 2) Item "global": SOLO para logins de padres (para listarlos sin saber sub)
+        if (action === "LOGIN" && role === "padres") {
+          const globalItem = {
+            ...item,
+            pk: "LOGINS#padres",
+            sk: `${ts}#${userSub}#${rand()}`,
+          };
+    
+          await dynamo.put({
+            TableName: LOGBOOK_TABLE,
+            Item: globalItem,
+          }).promise();
+        }
+    
   } catch (e) {
     // Importante: NO romper la app si falla el log
     console.error("[LogBook] Error logging event:", e);
