@@ -30,7 +30,9 @@
       <div class="tabs">
         <button class="tab active" data-tab="docs">Documentos</button>
         <button class="tab" data-tab="calendar">Calendario</button>
+        <button class="tab" data-tab="logbook">LogBook</button>
       </div>
+      
 
       <!-- 🔹 CONTENIDO: DOCUMENTOS -->
       <div id="tab-docs" class="tab-content active">
@@ -64,41 +66,22 @@
         </section>
       </div>
 
-      <!-- 3. LOGBOOK DE PADRES -->
-      <section style="margin-top: 20px;">
-        <h3>LogBook</h3>
+      <div id="tab-logbook" class="tab-content">
+        <h3>LogBook — Actividad de Padres</h3>
       
         <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-          <button class="btn" type="button" onclick="verMisLogs()">Ver mis logs</button>
-      
-          <input
-            id="logbook-sub-input"
-            type="text"
-            placeholder="SUB del padre (opcional)"
-            style="min-width: 320px; padding:8px;"
-          />
-          <button class="btn" type="button" onclick="verLogsDeUsuario()">Ver logs de ese usuario</button>
-        </div>
-      
-        <pre id="logbook-output" style="margin-top:12px; background:#111; color:#0f0; padding:12px; border-radius:8px; overflow:auto; max-height:320px;"></pre>
-      </section>
-
-      <section style="margin-top:20px;">
-        <h3>LogBook — Logins de Padres</h3>
-      
-        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-          <button ... onclick="cargarFeedPadres()">Cargar actividad</button>
+          <button class="btn" type="button" onclick="cargarFeedPadres()">Cargar actividad</button>
       
           <input id="logbook-filter"
             type="text"
-            placeholder="Filtrar por sub / IP / fecha..."
-            style="min-width:280px; padding:8px;"
-            oninput="filtrarLoginsPadres()"
+            placeholder="Filtrar por nombre, sub, acción, IP..."
+            style="min-width:300px; padding:8px;"
+            oninput="filtrarFeedPadres()"
           />
         </div>
       
         <div style="margin-top:12px; overflow:auto;">
-          <table id="logbook-table" style="width:100%; border-collapse:collapse;">
+          <table style="width:100%; border-collapse:collapse;">
             <thead>
               <tr>
                 <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Fecha</th>
@@ -106,14 +89,15 @@
                 <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Sub</th>
                 <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Tipo</th>
                 <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Acción</th>
-                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Archivo / Target</th>
+                <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">Archivo/Target</th>
                 <th style="text-align:left; border-bottom:1px solid #ccc; padding:8px;">IP</th>
               </tr>
-            </thead>            
+            </thead>
             <tbody id="logbook-tbody"></tbody>
           </table>
         </div>
-      </section>
+      </div>
+  
       
       
 

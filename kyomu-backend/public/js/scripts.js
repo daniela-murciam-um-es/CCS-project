@@ -1090,28 +1090,45 @@ async function listarPlantillasEntrenadorParaEntrenador() {
 // ========================================================
 function initTabsEntrenadores() {
   const tabs = document.querySelectorAll(".tabs .tab");
+
   const docsTab = document.getElementById("tab-docs");
   const calendarTab = document.getElementById("tab-calendar");
-  if (!tabs.length || !docsTab || !calendarTab) return;
+  const logbookTab = document.getElementById("tab-logbook");
+
+  if (!tabs.length || !docsTab || !calendarTab || !logbookTab) return;
+
+  function showTab(which) {
+    // reset active buttons
+    tabs.forEach((t) => t.classList.remove("active"));
+
+    // hide all
+    docsTab.classList.remove("active");
+    calendarTab.classList.remove("active");
+    logbookTab.classList.remove("active");
+
+    // show selected
+    if (which === "docs") docsTab.classList.add("active");
+    if (which === "calendar") calendarTab.classList.add("active");
+    if (which === "logbook") logbookTab.classList.add("active");
+
+    // marcar botón activo
+    const btn = Array.from(tabs).find((t) => t.getAttribute("data-tab") === which);
+    if (btn) btn.classList.add("active");
+  }
 
   tabs.forEach((tab) => {
     tab.addEventListener("click", () => {
       const target = tab.getAttribute("data-tab");
+      showTab(target);
 
-      tabs.forEach((t) => t.classList.remove("active"));
-      tab.classList.add("active");
-
-      docsTab.classList.remove("active");
-      calendarTab.classList.remove("active");
-
-      if (target === "docs") {
-        docsTab.classList.add("active");
-      } else if (target === "calendar") {
-        calendarTab.classList.add("active");
+      // opcional: cuando entres a LogBook, carga automáticamente
+      if (target === "logbook") {
+        cargarFeedPadres();
       }
     });
   });
 }
+
 
 function initTabsPadres() {
   const tabs = document.querySelectorAll(".tabs .tab");
