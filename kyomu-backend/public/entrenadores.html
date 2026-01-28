@@ -54,19 +54,7 @@
           <div id="docs-plantillas" class="docs-list"></div>
         </section>
 
-        <div class="trainer-filters">
-          <input
-            type="text"
-            id="trainer-search"
-            placeholder="Buscar padre, hijo o documento…"
-          />
-        
-          <select id="trainer-filter-type">
-            <option value="all">Todos</option>
-            <option value="parents">Padres</option>
-            <option value="children">Hijos</option>
-          </select>
-        </div>        
+         
 
         <!-- 2. DOCUMENTOS RECIBIDOS DE PADRES -->
         <section style="margin-top: 40px;">
@@ -80,19 +68,19 @@
         </section>
       </div>
 
-      <div id="tab-logbook" class="tab-content">
-        <h3>LogBook — Actividad de Padres</h3>
+      <div class="trainer-filters">
+        <input
+          type="text"
+          id="trainer-search"
+          placeholder="Buscar padre, hijo o documento…"
+        />
       
-        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-          <button class="btn" type="button" onclick="cargarFeedPadres()">Cargar actividad</button>
-      
-          <input id="logbook-filter"
-            type="text"
-            placeholder="Filtrar por nombre, sub, acción, IP..."
-            style="min-width:300px; padding:8px;"
-            oninput="filtrarFeedPadres()"
-          />
-        </div>
+        <select id="trainer-filter-type">
+          <option value="all">Todos</option>
+          <option value="parents">Padres</option>
+          <option value="children">Hijos</option>
+        </select>
+      </div> 
       
         <div style="margin-top:12px; overflow:auto;">
           <table style="width:100%; border-collapse:collapse;">

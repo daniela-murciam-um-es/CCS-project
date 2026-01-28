@@ -813,10 +813,16 @@ async function listarArchivosPadresParaEntrenador() {
               const cId = child.childId;
               const cSafe = cId.replace(/[^a-z0-9]/gi, "_");
               
-              // Intentamos extraer el nombre real si el backend lo mandó como "Hijo no identificado"
-              const nombreMostrar = child.childNombre && child.childNombre !== "Hijo no identificado"
-                    ? child.childNombre
-                    : `Hijo (${cId})`;
+              const nombreHijo = child.childNombre ||
+                  child.nombre ||
+                  child.name ||
+                  child.child_name ||
+                  null;
+
+            const nombreMostrar = nombreHijo
+              ? nombreHijo
+              : `Hijo (${cId})`;
+
 
 
               html += `
@@ -917,10 +923,7 @@ function initTrainerSearchAndFilter() {
   filterSelect.addEventListener("change", applyFilter);
 }
 
-
 initTrainerSearchAndFilter();
-
-
 
 function renderParentSectionForTrainer(parent) {
   const pSub = parent.parentSub;
