@@ -814,9 +814,10 @@ async function listarArchivosPadresParaEntrenador() {
               const cSafe = cId.replace(/[^a-z0-9]/gi, "_");
               
               // Intentamos extraer el nombre real si el backend lo mandó como "Hijo no identificado"
-              const nombreMostrar = (child.childNombre && child.childNnombre !== "Hijo no identificado") 
-                  ? child.childNombre 
-                  : `Hijo (${cId})`;
+              const nombreMostrar = child.childNombre && child.childNombre !== "Hijo no identificado"
+                    ? child.childNombre
+                    : `Hijo (${cId})`;
+
 
               html += `
               <div class="child-block">
@@ -866,6 +867,59 @@ async function listarArchivosPadresParaEntrenador() {
       cont.innerHTML = "<p>Error al cargar la gestión de archivos.</p>";
   }
 }
+
+function initTrainerSearchAndFilter() {
+  const searchInput = document.getElementById("trainer-search");
+  const filterSelect = document.getElementById("trainer-filter-type");
+
+  if (!searchInput || !filterSelect) return;
+
+  function applyFilter() {
+    const query = searchInput.value.toLowerCase();
+    const filter = filterSelect.value;
+
+    const parentSections = document.querySelectorAll(".parent-section");
+
+    parentSections.forEach((parentEl) => {
+      let parentMatches = false;
+
+      const parentName =
+        parentEl.querySelector(".parent-name")?.textContent.toLowerCase() || "";
+
+      if (filter !== "children" && parentName.includes(query)) {
+        parentMatches = true;
+      }
+
+      const childBlocks = parentEl.querySelectorAll(".child-block");
+      let anyChildVisible = false;
+
+      childBlocks.forEach((childEl) => {
+        const childText = childEl.textContent.toLowerCase();
+        const match = childText.includes(query);
+
+        const showChild =
+          filter === "all"
+            ? match || parentMatches
+            : filter === "children"
+            ? match
+            : parentMatches;
+
+        childEl.style.display = showChild ? "" : "none";
+        if (showChild) anyChildVisible = true;
+      });
+
+      parentEl.style.display =
+        parentMatches || anyChildVisible ? "" : "none";
+    });
+  }
+
+  searchInput.addEventListener("input", applyFilter);
+  filterSelect.addEventListener("change", applyFilter);
+}
+
+
+initTrainerSearchAndFilter();
+
 
 
 function renderParentSectionForTrainer(parent) {
@@ -1944,9 +1998,6 @@ function filtrarLoginsPadres() {
     return name.includes(q) || ts.includes(q) || sub.includes(q) || ip.includes(q) || path.includes(q) || action.includes(q) || target.includes(q);  });
   renderLoginsPadres(filtered);
 }
-
-
-
 
 // ========================================================
 // 2️⃣3️⃣ ARRANQUE GLOBAL
