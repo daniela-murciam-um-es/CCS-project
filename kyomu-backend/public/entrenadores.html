@@ -63,24 +63,27 @@
             Aquí puedes ver los archivos subidos por los padres, quién los ha
             enviado y descargarlos o eliminarlos si es necesario.
           </p>
-
+        
+          <!-- 🔍 FILTRO Y BUSCADOR -->
+          <div class="trainer-filters">
+            <input
+              type="text"
+              id="trainer-search"
+              placeholder="Buscar padre, hijo o documento…"
+            />
+        
+            <select id="trainer-filter-type">
+              <option value="all">Todos</option>
+              <option value="parents">Padres</option>
+              <option value="children">Hijos</option>
+            </select>
+          </div>
+        
+          <!-- 👨‍👩‍👧 LISTADO -->
           <div id="docs-entrenadores" class="docs-list"></div>
-        </section>
-      </div>
+        </section>        
 
-      <div class="trainer-filters">
-        <input
-          type="text"
-          id="trainer-search"
-          placeholder="Buscar padre, hijo o documento…"
-        />
-      
-        <select id="trainer-filter-type">
-          <option value="all">Todos</option>
-          <option value="parents">Padres</option>
-          <option value="children">Hijos</option>
-        </select>
-      </div> 
+      </div>
       
         <div style="margin-top:12px; overflow:auto;">
           <table style="width:100%; border-collapse:collapse;">

@@ -894,6 +894,27 @@ function initTrainerSearchAndFilter() {
 
       if (filter !== "children" && parentName.includes(query)) {
         parentMatches = true;
+
+            // 🔢 CONTADOR
+      let visibleParents = 0;
+      let visibleChildren = 0;
+
+      parentSections.forEach((parentEl) => {
+        if (parentEl.style.display !== "none") {
+          visibleParents++;
+
+          const visibleChildBlocks = parentEl.querySelectorAll(
+            ".child-block:not([style*='display: none'])"
+          );
+          visibleChildren += visibleChildBlocks.length;
+        }
+      });
+
+      const counter = document.getElementById("trainer-counter");
+      if (counter) {
+        counter.textContent = `Mostrando ${visibleParents} padre(s) · ${visibleChildren} hijo(s)`;
+      }
+
       }
 
       const childBlocks = parentEl.querySelectorAll(".child-block");
@@ -917,6 +938,8 @@ function initTrainerSearchAndFilter() {
       parentEl.style.display =
         parentMatches || anyChildVisible ? "" : "none";
     });
+
+    
   }
 
   searchInput.addEventListener("input", applyFilter);

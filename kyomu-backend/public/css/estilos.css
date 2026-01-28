@@ -657,3 +657,61 @@ h2 {
   }
 }
 
+/* ----------------------------------------------------
+   FILTRO ENTRENADORES (BUSCADOR + SELECT)
+---------------------------------------------------- */
+.trainer-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+
+  margin: 15px 0 10px 0;
+  padding: 12px 14px;
+
+  background: linear-gradient(
+    135deg,
+    #510606,
+    #9d1212
+  );
+
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(81, 6, 6, 0.35);
+}
+
+.trainer-filters input,
+.trainer-filters select {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.trainer-filters input {
+  flex: 1;
+  min-width: 220px;
+}
+
+.trainer-filters select {
+  background-color: #ffffff;
+  cursor: pointer;
+}
+
+/* Focus bonito */
+.trainer-filters input:focus,
+.trainer-filters select:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.7);
+}
+
+/* ----------------------------------------------------
+   CONTADOR FILTRO
+---------------------------------------------------- */
+.trainer-counter {
+  font-size: 13px;
+  font-weight: 600;
+  color: #510606;
+
+  margin: 6px 0 14px 2px;
+}
